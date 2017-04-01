@@ -1,5 +1,6 @@
 """Contains useful tools to work with decision system"""
 import decision_system
+import itertools
 import universal_tools
 import math
 
@@ -38,8 +39,8 @@ def __get_object__(line, attributes):
     return decision_object
 
 
-def is_object_meets_rule(rule, decision_object):
-    """Return true if meets; return false if not"""
+def has_object_fulfill_rule(rule, decision_object):
+    """Return true if fulfill; return false if not"""
     for descriptor in rule.descriptors:
         if descriptor not in decision_object.descriptors:
             return False
@@ -47,15 +48,29 @@ def is_object_meets_rule(rule, decision_object):
         return True
 
 
-def is_rule_consistency(rule, objects):
-    """Return true if """
+def is_rule_inconsistent(rule, objects):
+    """Return true if inconsistent; return false if not"""
     for decision_object in objects:
-        if is_object_meets_rule(rule, decision_object) and rule.decision != decision_object.decision:
+        if has_object_fulfill_rule(rule, decision_object) and rule.decision != decision_object.decision:
             return False
     else:
         return True
 
 
-def make_rule(decision_object, combination):
-    """Return rule"""
-    return decision_system.Rule(combination, decision_object.decision)
+def calculate_support(rule, objects):
+    """Calculate support of rule and eliminate supporting objects"""
+    support = 0
+    for decision_object in objects:
+        if has_object_fulfill_rule(rule, decision_object) and rule.decision == decision_object.decision:
+            decision_object.eliminated = True
+            support += 1
+    rule.support = support
+
+
+def is_this_end(objects):
+    """Return true if all objects are covered"""
+    for decision_object in objects:
+        if not hasattr(decision_object, "eliminated"):
+            return False
+    else:
+        return True

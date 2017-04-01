@@ -51,6 +51,7 @@ class MainFrame(Frame):
             system_file = open(self.system_file_path)
             self.decision_system = DecisionSystem(system_file)
             system_file.close()
+            self.decision_system.do_staff()
         except FileNotFoundError:
             messagebox.showerror("Error", "Oops! File not found!")
 
