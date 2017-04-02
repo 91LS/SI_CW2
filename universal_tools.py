@@ -33,7 +33,6 @@ def get_average(table):
 def get_average_and_standard_deviation_table(table):
     """Return average and standard deviation"""
     sum_of_table, variance = 0, 0
-
     for number in table:
         sum_of_table += number
     average = sum_of_table/len(table)

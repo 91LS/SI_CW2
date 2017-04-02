@@ -13,7 +13,7 @@ def get_system_attributes(system_file):
     attributes = []
     if first_line != '':  # true if line isn't empty
         for index, value in enumerate(first_line):
-            attributes.append(decision_system.Attribute("a{}".format(index)))  # return list of Attributes
+            attributes.append(decision_system.Attribute("a{}".format(index+1)))  # return list of Attributes
     return attributes
 
 
@@ -39,6 +39,7 @@ def __get_object__(line, attributes):
     return decision_object
 
 
+# tools for Sequence Covering algorithm
 def has_object_fulfill_rule(rule, decision_object):
     """Return true if fulfill; return false if not"""
     for descriptor in rule.descriptors:
@@ -67,10 +68,23 @@ def calculate_support(rule, objects):
     rule.support = support
 
 
-def is_this_end(objects):
+def is_this_the_end(objects):
     """Return true if all objects are covered"""
     for decision_object in objects:
         if not hasattr(decision_object, "eliminated"):
             return False
     else:
         return True
+
+
+# tools for Exhaustive algorithm
+def get_same_descriptors(first_object, second_object):
+    """Return same descriptors for two Decision Objects"""
+    descriptors = []
+    for index, descriptor in enumerate(first_object.descriptors):
+        if descriptor == second_object.descriptors[index]:
+            descriptors.append(descriptor.attribute)
+    return descriptors
+
+
+
