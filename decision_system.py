@@ -42,7 +42,19 @@ class DecisionSystem:
                 matrix[object_combination] = descriptors
             else:
                 matrix[object_combination] = []
-        b = 0
+
+        for scale in range(self.objects.__len__()):
+            scale += 1
+            for index, decision_object in enumerate(self.objects):
+                if hasattr(decision_object, "eliminated"):
+                    continue
+                eliminated_descriptors = system_tools.get_descriptors_from_object_column(matrix, index)
+                combination_of_descriptors = list(itertools.combinations(decision_object.descriptors, scale))
+                r = system_tools.get_not_used_descriptors(eliminated_descriptors,combination_of_descriptors,
+                                                          decision_object, scale)
+                if r is not None:
+                    for a in r:
+                        rules.append(a)
 
 
 class DecisionObject:

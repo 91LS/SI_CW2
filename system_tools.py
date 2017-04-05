@@ -1,4 +1,5 @@
 """Contains useful tools to work with decision system"""
+from typing import Dict, List
 import decision_system
 import itertools
 import universal_tools
@@ -83,8 +84,29 @@ def get_same_descriptors(first_object, second_object):
     descriptors = []
     for index, descriptor in enumerate(first_object.descriptors):
         if descriptor == second_object.descriptors[index]:
-            descriptors.append(descriptor.attribute)
+            descriptors.append(descriptor)
     return descriptors
+
+
+def get_descriptors_from_object_column(matrix, object_index):
+    """Return unique descriptors for object in matrix column"""
+    descriptors = []
+    for tuple_index in matrix:
+        if object_index == tuple_index[0] or object_index == tuple_index[1]:
+            for descriptor in matrix[tuple_index]:
+                if descriptor not in descriptors:
+                    descriptors.append(descriptor)
+    return descriptors
+
+
+def get_not_used_descriptors(eliminated_descriptors, combinations, decision_object, scale):
+
+    rules = []
+    for combination in combinations:
+        for descriptor in combination:
+            if descriptor not in eliminated_descriptors:
+                rules.append(decision_system.Rule(combination, decision_object.decision, scale))
+    return rules
 
 
 
